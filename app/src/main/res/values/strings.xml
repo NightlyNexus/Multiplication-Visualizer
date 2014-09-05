@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Multiplication Visualizer</string>
+    <string name="play">Play</string>
+    <string name="rewind">Rewind</string>
+    <string name="stop">Stop</string>
+
+</resources>
