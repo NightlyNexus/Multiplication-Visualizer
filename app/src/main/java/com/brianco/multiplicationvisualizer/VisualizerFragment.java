@@ -104,6 +104,8 @@ public class VisualizerFragment extends Fragment {
                 mStartForwardButton.setText(R.string.stop);
                 incrementTable();
             }
+        } else {
+            stopPlay();
         }
     }
 
@@ -115,6 +117,8 @@ public class VisualizerFragment extends Fragment {
                 mStartBackwardButton.setText(R.string.stop);
                 decrementTable();
             }
+        } else {
+            stopRewind();
         }
     }
 
