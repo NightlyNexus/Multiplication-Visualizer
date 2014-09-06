@@ -15,6 +15,7 @@ public class VisualizerFragment extends Fragment {
 
     private static final String KEY_TABLE_NUM = "KEY_TABLE_NUM";
     private static final int DELAY_MILLIS = 400;
+    private static final int MAX_NUMBER = 63;
     private boolean mIsRunningForward;
     private boolean mIsRunningBackward;
     private MultiplicationTable mTable;
@@ -34,26 +35,14 @@ public class VisualizerFragment extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (mIsRunningForward) {
-                            if (number >= 63) {
-                                stopPlay();
-                            } else {
-                                incrementTable();
-                            }
-                        }
+                        runForward(number);
                     }
                 }, DELAY_MILLIS);
             } else if (mIsRunningBackward) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if (mIsRunningBackward) {
-                            if (number <= MultiplicationTable.MIN_NUMBER) {
-                                stopRewind();
-                            } else {
-                                decrementTable();
-                            }
-                        }
+                        runBackward(number);
                     }
                 }, DELAY_MILLIS);
             }
@@ -84,12 +73,7 @@ public class VisualizerFragment extends Fragment {
             public void onClick(View view) {
                 stopRewind();
                 mIsRunningForward = !mIsRunningForward;
-                if (mIsRunningForward) {
-                    mStartForwardButton.setText(R.string.stop);
-                    incrementTable();
-                } else {
-                    mStartForwardButton.setText(R.string.play);
-                }
+                runForward(mTable.getNumber());
             }
         });
         mStartBackwardButton.setOnClickListener(new View.OnClickListener() {
@@ -97,12 +81,7 @@ public class VisualizerFragment extends Fragment {
             public void onClick(View view) {
                 stopPlay();
                 mIsRunningBackward = !mIsRunningBackward;
-                if (mIsRunningBackward) {
-                    mStartBackwardButton.setText(R.string.stop);
-                    decrementTable();
-                } else {
-                    mStartBackwardButton.setText(R.string.rewind);
-                }
+                runBackward(mTable.getNumber());
             }
         });
 
@@ -115,6 +94,28 @@ public class VisualizerFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt(KEY_TABLE_NUM, mTable.getNumber());
         super.onSaveInstanceState(outState);
+    }
+
+    private void runForward(final int number) {
+        if (mIsRunningForward) {
+            if (number >= MAX_NUMBER) {
+                stopPlay();
+            } else {
+                mStartForwardButton.setText(R.string.stop);
+                incrementTable();
+            }
+        }
+    }
+
+    private void runBackward(final int number) {
+        if (mIsRunningBackward) {
+            if (number <= MultiplicationTable.MIN_NUMBER) {
+                stopRewind();
+            } else {
+                mStartBackwardButton.setText(R.string.stop);
+                decrementTable();
+            }
+        }
     }
 
     private void stopPlay() {
